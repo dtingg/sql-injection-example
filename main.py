@@ -12,14 +12,16 @@ def home():
     c = conn.cursor()
 
     if request.method == 'POST':
+        # A message'), ('256.256.256.256', 'You have been hacked!
+        # "INSERT INTO messages VALUES ('127.0.0.1', 'A message'), ('256.256.256.256', 'You have been hacked!')"
 
         transaction = "INSERT INTO messages VALUES ('{}', '{}')".format(
             request.remote_addr,
-            request.form['content'],
+            request.form['content'].replace("'", "''"),  # replace single quotes to prevent attack
         )
+
         c.execute(transaction)
         conn.commit()
-
 
     body = """
 <html>
